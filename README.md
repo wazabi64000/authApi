@@ -126,7 +126,7 @@ npm/yarn run dev
 
 ##    6. Bref descriptif des dossiers/fichiers ##
 
-config/db.js : connexion MongoDB simplifiée (Mongoose 7+ sans options obsolètes)
+config/db.js : connexion MongoDB simplifiée (Mongoose 7+ )
 
 controllers/authController.js : fonctions asynchrones gérant les actions d’authentification (register, login, email verification)
 
