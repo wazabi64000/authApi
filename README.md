@@ -1,4 +1,23 @@
 # authApi
+mkdir -p mon-api-auth/{config,controllers,middlewares,models,routes,utils}
+
+touch mon-api-auth/server.js
+touch mon-api-auth/.env
+touch mon-api-auth/.gitignore
+touch mon-api-auth/package.json
+touch mon-api-auth/README.md
+
+touch mon-api-auth/config/db.js
+touch mon-api-auth/controllers/authController.js
+touch mon-api-auth/middlewares/authMiddleware.js
+touch mon-api-auth/models/User.js
+touch mon-api-auth/routes/auth.js
+touch mon-api-auth/utils/sendEmail.js
+touch mon-api-auth/utils/cloudinary.js
+
+cd mon-api-auth
+
+
 ##    1. Arborescence du projet                 ##
 mon-api-auth/
 │
