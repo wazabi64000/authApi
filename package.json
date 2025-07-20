@@ -5,6 +5,7 @@
   "repository": "git@github.com:wazabi64000/authApi.git",
   "author": "wazabi64000 <wazabi64000@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.7.0",
@@ -19,7 +20,7 @@
     "nodemon": "^3.1.10"
   },
   "scripts": {
-  "dev": "nodemon server.js",
-  "start": "node server.js"
-}
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  }
 }
