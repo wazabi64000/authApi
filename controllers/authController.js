@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import sendEmail from "../utils/sendEmail.js";
 import dotenv from "dotenv";
+import crypto from 'crypto'
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -133,6 +134,81 @@ export async function login(req, res) {
       },
       token,
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur serveur." });
+  }
+}
+
+export async function requestPasswordReset(req, res) {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: "Email requis." });
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "Utilisateur non trouvé." });
+
+    // Création d'un token unique pour reset, par exemple un JWT ou token random
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    // Option 1: stocker un hash du token pour sécurité
+    const resetTokenHashed = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    // Sauvegarde dans la DB avec expiration 1h par ex
+    user.resetPasswordToken = resetTokenHashed;
+    user.resetPasswordExpire = Date.now() + 3600000; // 1h en ms
+    await user.save();
+
+    // URL de reset envoyée par email
+    const resetUrl = `${CLIENT_URL}/api/auth/reset-password/${resetToken}`;
+
+    await sendEmail({
+      to: user.email,
+      subject: "Réinitialisation de mot de passe",
+      html: `<p>Bonjour,</p>
+             <p>Pour réinitialiser votre mot de passe, cliquez sur ce lien :</p>
+             <a href="${resetUrl}">${resetUrl}</a>
+             <p>Ce lien expire dans 1 heure.</p>`
+    });
+
+    res.json({ message: "Email de réinitialisation envoyé." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur serveur." });
+  }
+}
+
+
+export async function resetPassword(req, res) {
+  const { token } = req.params;
+  const { password, confirmPassword } = req.body;
+
+  if (!password || !confirmPassword)
+    return res.status(400).json({ message: "Tous les champs sont obligatoires." });
+
+  if (password !== confirmPassword)
+    return res.status(400).json({ message: "Les mots de passe ne correspondent pas." });
+
+  try {
+    // Hash le token reçu pour le comparer en DB
+    const resetTokenHashed = crypto.createHash('sha256').update(token).digest('hex');
+
+    // Trouver l'utilisateur avec token valide et non expiré
+    const user = await User.findOne({
+      resetPasswordToken: resetTokenHashed,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) return res.status(400).json({ message: "Token invalide ou expiré." });
+
+    // Hash du nouveau password
+    user.password = await bcrypt.hash(password, 12);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    res.json({ message: "Mot de passe réinitialisé avec succès." });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erreur serveur." });
