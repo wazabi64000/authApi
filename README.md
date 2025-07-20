@@ -148,3 +148,70 @@ server.js : point d’entrée express, initialise middleware, routes, connexion 
 
 
 
+# Servive mail / API / SMTP
+
+1. Mailtrap
+
+    Spécialement conçu pour tester l’envoi d’emails en développement, sans les envoyer aux vrais destinataires.
+
+    Idéal pour dev, sandbox sécurisé.
+
+2. SendGrid (Free tier)
+
+    Offre 100 emails/jour gratuitement.
+
+    API puissante, bon support, facile à intégrer.
+
+3. Mailgun (Free plan)
+
+    5 000 emails/mois gratuits les 3 premiers mois, puis 1 000/mois gratuit.
+
+    Bon pour les développeurs avec une API REST.
+
+4. Amazon SES (Simple Email Service)
+
+    Gratuit dans la limite de 62 000 emails par mois si utilisé via AWS EC2.
+
+    Très bon rapport qualité/prix, mais un peu plus complexe à configurer.
+
+5. Postmark (Trial + free tier)
+
+    Essai gratuit de 100 emails, puis plans payants.
+
+    Très fiable pour les mails transactionnels.
+
+6. SparkPost (Free plan)
+
+    500 emails/mois gratuits.
+
+    Offre analytics et API robuste.
+
+7. Sendinblue (Free plan)
+
+    300 emails/jour gratuitement, avec limite journalière.
+
+    Interface marketing complète et API.
+
+8. Elastic Email (Free tier)
+
+    100 emails/jour gratuits.
+
+    API et SMTP, bon pour les petites apps.
+
+9. Moosend (Free plan)
+
+    1 000 emails/mois gratuits.
+
+    Interface user-friendly, marketing et transactionnel.
+
+10. Mailjet (Free plan)
+
+    6 000 emails/mois gratuits (200/jour).
+
+    API REST et SMTP, facile à intégrer.
+
+
+
+
+
+    1. Installer node-cron (si ce n’est pas fait)

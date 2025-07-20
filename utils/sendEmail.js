@@ -1,41 +1,33 @@
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
 dotenv.config();
 
-const MAILTRAP_USER = process.env.MAILTRAP_USER; // ex: '1234567890abcdef'
-const MAILTRAP_PASS = process.env.MAILTRAP_PASS; // ex: 'abcdef1234567890'
+// Test temporaire (à supprimer une fois que ça marche)
+console.log("ELASTIC_EMAIL:", process.env.ELASTIC_EMAIL);
+console.log("ELASTIC_API_KEY:", process.env.ELASTIC_API_KEY);
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.mailtrap.io',
+  host: "smtp.elasticemail.com",
   port: 2525,
+  secure: false,
   auth: {
-    user: MAILTRAP_USER,
-    pass: MAILTRAP_PASS,
+    user: process.env.ELASTIC_EMAIL,
+    pass: process.env.ELASTIC_API_KEY,
   },
 });
 
-/**
- * Envoie un email simple via Mailtrap
- * @param {Object} options - Options email
- * @param {string} options.to - Destinataire
- * @param {string} options.subject - Sujet
- * @param {string} options.html - Contenu HTML
- */
-async function sendEmail({ to, subject, html }) {
+export default async function sendEmail({ to, subject, html }) {
   try {
-    const mailOptions = {
-      from: '"Mon App" <no-reply@monapp.com>', // expéditeur
+    const info = await transporter.sendMail({
+      from: `"Wazacode 👨‍💻" <${process.env.ELASTIC_EMAIL}>`,
       to,
       subject,
       html,
-    };
-
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email envoyé:', info.messageId);
+    });
+    console.log("Email envoyé:", info.messageId);
   } catch (error) {
-    console.error('Erreur envoi email:', error);
-    throw new Error('Erreur lors de l’envoi de l’email');
+    console.error("Erreur envoi email:", error);
+    throw new Error("Erreur lors de l’envoi de l’email");
   }
 }
-
-export default sendEmail;
