@@ -7,20 +7,31 @@ dotenv.config();
 console.log("ELASTIC_EMAIL:", process.env.ELASTIC_EMAIL);
 console.log("ELASTIC_API_KEY:", process.env.ELASTIC_API_KEY);
 
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.elasticemail.com",
+//   port: 2525,
+//   secure: false,
+//   auth: {
+//     user: process.env.ELASTIC_EMAIL,
+//     pass: process.env.ELASTIC_API_KEY,
+//   },
+// });
+
+
 const transporter = nodemailer.createTransport({
-  host: "smtp.elasticemail.com",
-  port: 2525,
-  secure: false,
+  service: 'gmail',
+ 
+  
   auth: {
-    user: process.env.ELASTIC_EMAIL,
-    pass: process.env.ELASTIC_API_KEY,
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD,
   },
 });
 
 export default async function sendEmail({ to, subject, html }) {
   try {
     const info = await transporter.sendMail({
-      from: `"Wazacode 👨‍💻" <${process.env.ELASTIC_EMAIL}>`,
+     from: `"Wazacode 👨" <${process.env.GMAIL_USER}>`,
       to,
       subject,
       html,

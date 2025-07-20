@@ -52,8 +52,7 @@ export async function register(req, res) {
     const verificationUrl = `${CLIENT_URL}/api/auth/verify/${verificationToken}`;
 
     await sendEmail({
-      //to: newUser.email,
-      to: "wazabi64000@gmail.com", // ← temporaire
+      to: newUser.email,
       subject: "Vérifiez votre compte",
       html: `Bonjour ${name},<br><br>Merci de vérifier votre compte en cliquant sur ce lien : <a href="${verificationUrl}">Vérifier mon compte</a><br><br>Ce lien est valable 24h.`,
     });
@@ -168,8 +167,8 @@ export async function requestPasswordReset(req, res) {
     const resetUrl = `${CLIENT_URL}/api/auth/reset-password/${resetToken}`;
 
     await sendEmail({
-      //to: newUser.email,
-      to: "wazabi64000@gmail.com", // ← temporaire
+      to: newUser.email,
+      //to: "wazabi64000@gmail.com", // ← temporaire
       subject: "Réinitialisation de mot de passe",
       html: `<p>Bonjour,</p>
              <p>Pour réinitialiser votre mot de passe, cliquez sur ce lien :</p>
@@ -227,5 +226,3 @@ export async function resetPassword(req, res) {
     res.status(500).json({ message: "Erreur serveur." });
   }
 }
-
-
