@@ -215,3 +215,6 @@ server.js : point d’entrée express, initialise middleware, routes, connexion 
 
 
     1. Installer node-cron (si ce n’est pas fait)
+
+
+    rajouter une valeur 
