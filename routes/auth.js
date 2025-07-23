@@ -1,16 +1,19 @@
 import express from 'express';
-import { register, login, verifyEmail, requestPasswordReset, resetPassword, resendVerificationEmail } from '../controllers/authController.js';
+import { register, login, verifyEmail, requestPasswordReset, resetPassword, resendVerificationEmail, logout } from '../controllers/authController.js';
 import { authorize, protect } from '../middlewares/authMiddleware.js';
+import { validate } from '../middlewares/validationMiddleware.js';
+import { createUserSchema, loginShema } from '../validation/authValidation.js';
 
 const router = express.Router();
 
-router.post('/register', register);
-router.post('/login', login);
-router.get('/verify/:token', verifyEmail);
+router.post('/register', validate(createUserSchema), register);
+router.post('/login', validate(loginShema) ,login);
+router.get('/verify/:token',  verifyEmail);
+router.post('/logout', logout)
 
-router.post('/password-reset-request', requestPasswordReset);
-router.post('/reset-password/:token', resetPassword);
-router.post("/resend-verification", resendVerificationEmail);
+router.post('/password-reset-request',  requestPasswordReset);
+router.post('/reset-password/:token',  resetPassword);
+router.post("/resend-verification",  resendVerificationEmail);
 
 router.get('/user-profile', protect, (req, res) => {
   res.json({ message: `Bienvenue ${req.user.name}` });

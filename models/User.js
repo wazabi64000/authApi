@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const rolesEnum = ['admin', 'user'];
+const rolesEnum = [33 , 'user', 'redacteur'];
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
