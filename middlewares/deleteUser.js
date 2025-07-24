@@ -10,7 +10,7 @@ async function deleteUnverifiedUsers() {
     // Suppression de tous les utilisateurs qui ne sont pas vérifiés ET dont la date de création est antérieure à "twentySecondsAgo"
     const result = await User.deleteMany({
       isVerified: false,
-      createdAt: { $lt: threeDaysAgo },
+      createdAt: { $lt: twentySecondsAgo },
     });
 
     // Affichage du nombre d'utilisateurs supprimés
@@ -23,7 +23,7 @@ async function deleteUnverifiedUsers() {
 
 // Planification du cron job avec la syntaxe cron suivante : "12 14 */3 * *"
 // Ce qui signifie : à 14h12 tous les 3 jours du mois
-const task = cron.schedule("12 14 */3 * *", () => {
+const task = cron.schedule("*/20 * * * * *",  () => {
   // Log dans la console quand la tâche démarre
   console.log("Cron job démarré pour supprimer les utilisateurs non vérifiés...");
   // Appel de la fonction pour supprimer les utilisateurs non vérifiés

@@ -9,7 +9,7 @@ const testLoginBruteForce = async () => {
     password: "wazabi123456"
   };
 
-  for (let i = 1; i <= 6; i++) {
+  for (let i = 1; i <= 60000000; i++) {
     try {
       const response = await axios.post(URL, payload, {
         withCredentials: true,
